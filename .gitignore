@@ -12,4 +12,4 @@
 *.out
 
 info.json
-pics
+pics/*.png
