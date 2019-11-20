@@ -12,9 +12,9 @@ func SendMailToAddress(address, path, title, user, pw, smtpWithPort, smtpAddress
 	mail := email.NewEmail()
 	mail.From = "XKCD Subscriber"
 	mail.To = []string{address}
-	mail.Subject = "Todays XKCD comic: " + title
+	mail.Subject = "New XKCD comic: " + title
 	mail.AttachFile(path)
-	mail.Text = []byte("Todays comic is attached to this mail")
+	mail.Text = []byte("The new comic is attached to this mail")
 	mail.Send(smtpWithPort, smtp.PlainAuth("", user, pw, smtpAddress))
 	log.Println("Email sent to", address)
 }
