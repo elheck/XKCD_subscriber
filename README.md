@@ -6,8 +6,6 @@ A very first try at writing a very basic XKCD email subscription service.
 
 Info is retrieved from info.json, which is structured in the following way.
 
-
-
     "username": "username",
     "pw": "password",
     "smtp_server": "smtpserver",

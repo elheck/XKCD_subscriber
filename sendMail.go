@@ -3,12 +3,14 @@ package main
 import (
 	"log"
 	"net/smtp"
+	"sync"
 
 	"github.com/jordan-wright/email"
 )
 
-//SendMailToAddress sends mail
-func SendMailToAddress(address, path, title, user, pw, smtpWithPort, smtpAddress string) {
+//SendMailToAddress sends mail and signals a waitgroup that it is done
+func SendMailToAddress(address, path, title, user, pw, smtpWithPort, smtpAddress string, waitgroup *sync.WaitGroup) {
+	defer waitgroup.Done()
 	mail := email.NewEmail()
 	mail.From = "XKCD Subscriber"
 	mail.To = []string{address}
