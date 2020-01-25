@@ -12,11 +12,15 @@ import (
 func SendMailToAddress(address, path, title, user, pw, smtpWithPort, smtpAddress string, waitgroup *sync.WaitGroup) {
 	defer waitgroup.Done()
 	mail := email.NewEmail()
-	mail.From = "XKCD Subscriber"
+	mail.From = "XKCD Subscriber <spotify_playlist_creator@gmx.de>"
 	mail.To = []string{address}
 	mail.Subject = "New XKCD comic: " + title
 	mail.AttachFile(path)
 	mail.Text = []byte("The new comic is attached to this mail")
-	mail.Send(smtpWithPort, smtp.PlainAuth("", user, pw, smtpAddress))
-	log.Println("Email sent to", address)
+	err := mail.Send(smtpWithPort, smtp.PlainAuth("", user, pw, smtpAddress))
+	if err != nil {
+		log.Fatal(err)
+	}else{
+		log.Println("Email sent to", address)
+	}
 }

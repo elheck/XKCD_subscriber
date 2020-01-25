@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strconv"
 
 	"github.com/nishanths/go-xkcd"
@@ -12,12 +13,19 @@ import (
 
 //SaveComicGetName returns Comic Name and path
 //and save file as number.png
-func SaveComicGetName(root string) (string, string) {
+func SaveComicGetName(root string) (string, string, bool) {
 	comic := getLatestComic()
 	numberString := strconv.Itoa(comic.Number)
 	path := getPath(numberString, root)
-	saveComicToFile(comic.ImageURL, path)
-	return comic.SafeTitle, path
+	alreadyExists := false
+	absPath, _ := filepath.Abs(path)
+	_, err := os.Stat(absPath)
+	if err == nil {
+		alreadyExists = true
+	} else if os.IsNotExist(err) {
+		saveComicToFile(comic.ImageURL, path)
+	}
+	return comic.SafeTitle, path, alreadyExists
 }
 
 func getLatestComic() xkcd.Comic {
