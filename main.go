@@ -2,15 +2,19 @@ package main
 
 import (
 	"log"
+	"os"
+	"fmt"
 	"sync"
 	"time"
 )
 
-const rootPath string = "./pics/"
+var rootPath string
 
 func main() {
+	rootPath := os.Args[1]
+	fmt.Println("RootPath is", rootPath)
 	var wg sync.WaitGroup
-	dailyTicker := time.NewTicker(24 * time.Hours)
+	dailyTicker := time.NewTicker(12 * time.Second)
 	for _ = range dailyTicker.C {
 		title, path, alreadyExists := SaveComicGetName(rootPath)
 		if !alreadyExists{
@@ -22,7 +26,7 @@ func main() {
 			}
 			wg.Wait()
 		} else {
-			log.Println("No new comic today")
+			log.Println("No new comic")
 		}
 	}
 }
